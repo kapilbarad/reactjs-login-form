@@ -11,7 +11,8 @@ class Login extends Component {
         this.state = {
             formData: {}, // Contains login form data
             errors: {}, // Contains login field errors
-            formSubmitted: false // indicates submit status of login form 
+            formSubmitted: false, // Indicates submit status of login form 
+            loading: false // Indicates in progress state of login form
         }
     }
 
@@ -71,8 +72,9 @@ class Login extends Component {
     }
 
     login = (e) => {
-        e.preventDefault();
         
+        e.preventDefault();
+
         let errors = this.validateLoginForm();
 
         if(errors === true){
