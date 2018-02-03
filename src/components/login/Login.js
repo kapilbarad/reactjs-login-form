@@ -20,7 +20,7 @@ class Login extends Component {
         const value = target.value;
         const name = target.name;
 
-        var formData = this.state.formData;
+        let formData = this.state.formData;
         formData[name] = value;
 
         this.setState({
@@ -30,7 +30,7 @@ class Login extends Component {
 
     getValidationState = (field) => {
 
-        var state = null;
+        let state = null;
 
         if (this.state.formSubmitted) {
 
@@ -48,7 +48,7 @@ class Login extends Component {
     login = (e) => {
         e.preventDefault();
 
-        var errors = {};
+        let errors = {};
 
         if (isEmpty(this.state.formData.email)) {
             errors.email = "Email can't be blank";
