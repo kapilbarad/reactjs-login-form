@@ -29,22 +29,6 @@ class Login extends Component {
         });
     }
 
-    getValidationState = (field) => {
-
-        let state = null;
-        const { formSubmitted, errors } = this.state;
-
-        if (formSubmitted) {
-            if (errors[field]) {
-                state = 'error';
-            } else {
-                state = 'success';
-            }
-        }
-
-        return state;
-    }
-
     validateLoginForm = (e) => {
         
         let errors = {};
@@ -90,20 +74,20 @@ class Login extends Component {
 
     render() {
 
-        const { errors } = this.state;
+        const { errors, formSubmitted } = this.state;
 
         return (
             <div className="Login">
                 <Row>
                     <form onSubmit={this.login}>
-                        <FormGroup controlId="email" validationState={this.getValidationState('email')}>
+                        <FormGroup controlId="email" validationState={ formSubmitted ? (errors.email ? 'error' : 'success') : null }>
                             <ControlLabel>Email</ControlLabel>
                             <FormControl type="text" name="email" placeholder="Enter your email" onChange={this.handleInputChange} />
                         { errors.email && 
                             <HelpBlock>{errors.email}</HelpBlock> 
                         }
                         </FormGroup >
-                        <FormGroup controlId="password" validationState={this.getValidationState('password')}>
+                        <FormGroup controlId="password" validationState={ formSubmitted ? (errors.password ? 'error' : 'success') : null }>
                             <ControlLabel>Password</ControlLabel>
                             <FormControl type="password" name="password" placeholder="Enter your password" onChange={this.handleInputChange} />
                         { errors.password && 
