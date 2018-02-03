@@ -31,7 +31,7 @@ class Login extends Component {
     getValidationState = (field) => {
 
         let state = null;
-        let { formSubmitted, errors } = this.state;
+        const { formSubmitted, errors } = this.state;
 
         if (formSubmitted) {
             if (errors[field]) {
