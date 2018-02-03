@@ -20,7 +20,7 @@ class Login extends Component {
         const value = target.value;
         const name = target.name;
 
-        let formData = this.state.formData;
+        let { formData } = this.state;
         formData[name] = value;
 
         this.setState({
@@ -31,51 +31,65 @@ class Login extends Component {
     getValidationState = (field) => {
 
         let state = null;
+        let { formSubmitted, errors } = this.state;
 
-        if (this.state.formSubmitted) {
-
-            if (this.state.errors[field]) {
+        if (formSubmitted) {
+            if (errors[field]) {
                 state = 'error';
             } else {
                 state = 'success';
             }
-
         }
 
         return state;
     }
 
-    login = (e) => {
-        e.preventDefault();
-
+    validateLoginForm = (e) => {
+        
         let errors = {};
+        const { formData } = this.state;
 
-        if (isEmpty(this.state.formData.email)) {
+        if (isEmpty(formData.email)) {
             errors.email = "Email can't be blank";
-        } else if (!isEmail(this.state.formData.email)) {
+        } else if (!isEmail(formData.email)) {
             errors.email = "Please enter a valid email";
         }
 
-        if (isEmpty(this.state.formData.password)) {
+        if (isEmpty(formData.password)) {
             errors.password = "Password can't be blank";
-        }  else if (isContainWhiteSpace(this.state.formData.password)) {
+        }  else if (isContainWhiteSpace(formData.password)) {
             errors.password = "Password should not contain white spaces";
-        } else if (!isLength(this.state.formData.password, { gte: 6, lte: 16, trim: true })) {
+        } else if (!isLength(formData.password, { gte: 6, lte: 16, trim: true })) {
             errors.password = "Password's length must between 6 to 16";
         }
+
+        if (isEmpty(errors)) {
+            return true;
+        } else {
+            return errors;
+        }    
+    }
+
+    login = (e) => {
+        e.preventDefault();
         
-        if (!isEmpty(errors)) {
+        let errors = this.validateLoginForm();
+
+        if(errors === true){
+            alert("You are successfully signed in...");
+            window.location.reload()   
+        } else {
             this.setState({
                 errors: errors,
                 formSubmitted: true
             });
-        } else {
-            alert("You are successfully signed in...");
-            window.location.reload()
         }
     }
 
     render() {
+
+        const { errors } = this.state;
+
         return (
             <div className="Login">
                 <Row>
@@ -83,15 +97,15 @@ class Login extends Component {
                         <FormGroup controlId="email" validationState={this.getValidationState('email')}>
                             <ControlLabel>Email</ControlLabel>
                             <FormControl type="text" name="email" placeholder="Enter your email" onChange={this.handleInputChange} />
-                        { this.state.errors.email && 
-                            <HelpBlock>{this.state.errors.email}</HelpBlock> 
+                        { errors.email && 
+                            <HelpBlock>{errors.email}</HelpBlock> 
                         }
                         </FormGroup >
                         <FormGroup controlId="password" validationState={this.getValidationState('password')}>
                             <ControlLabel>Password</ControlLabel>
                             <FormControl type="password" name="password" placeholder="Enter your password" onChange={this.handleInputChange} />
-                        { this.state.errors.password && 
-                            <HelpBlock>{this.state.errors.password}</HelpBlock> 
+                        { errors.password && 
+                            <HelpBlock>{errors.password}</HelpBlock> 
                         }
                         </FormGroup>
                         <Button type="submit" bsStyle="primary">Sign-In</Button>
