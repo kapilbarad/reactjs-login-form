@@ -5,6 +5,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const OptimizeCssnanoPlugin = require('@intervolga/optimize-cssnano-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
@@ -153,6 +154,12 @@ module.exports = {
               compact: true,
             },
           },
+          // Process sass
+          {
+            test: /\.sass$/,
+            include: paths.appSrc,
+            use: ['style-loader', 'css-loader', 'sass-loader?sourceMap=true']
+          },
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.
           // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -181,8 +188,6 @@ module.exports = {
                       loader: require.resolve('css-loader'),
                       options: {
                         importLoaders: 1,
-                        minimize: true,
-                        sourceMap: shouldUseSourceMap,
                       },
                     },
                     {
@@ -209,7 +214,7 @@ module.exports = {
                 },
                 extractTextPluginOptions
               )
-            ),
+            )
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
           // "file" loader makes sure assets end up in the `build` folder.
@@ -286,6 +291,9 @@ module.exports = {
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin({
       filename: cssFilename,
+    }),
+    new OptimizeCssnanoPlugin({
+      sourceMap: shouldUseSourceMap
     }),
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
