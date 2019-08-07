@@ -4,7 +4,7 @@
  * @returns Boolean
  */
 export const isEmail = (email) => {
-    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
@@ -31,6 +31,9 @@ export const isEmpty = (thing) => {
             } else if (Object.keys(thing).length === 0) {
                 empty = true;
             }
+            break;
+        default:
+            empty = true;
     }
 
     return empty;
@@ -49,7 +52,7 @@ export const isEmpty = (thing) => {
 export const isLength = (str, options) => {
 
     if (isEmpty(options)) {
-        throw "Who will provide the options you?"
+        throw new Error("Who will provide the options you?")
     }
 
     let isValid = true;

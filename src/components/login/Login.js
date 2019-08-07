@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Form, FormGroup, FormControl, ControlLabel, Button, HelpBlock } from 'react-bootstrap';
+import { Row, FormGroup, FormControl, ControlLabel, Button, HelpBlock } from 'react-bootstrap';
 import './login.sass';
 import { isEmail, isEmpty, isLength, isContainWhiteSpace } from 'shared/validator';
 
@@ -11,7 +11,7 @@ class Login extends Component {
         this.state = {
             formData: {}, // Contains login form data
             errors: {}, // Contains login field errors
-            formSubmitted: false, // Indicates submit status of login form 
+            formSubmitted: false, // Indicates submit status of login form
             loading: false // Indicates in progress state of login form
         }
     }
@@ -30,7 +30,7 @@ class Login extends Component {
     }
 
     validateLoginForm = (e) => {
-        
+
         let errors = {};
         const { formData } = this.state;
 
@@ -52,18 +52,18 @@ class Login extends Component {
             return true;
         } else {
             return errors;
-        }    
+        }
     }
 
     login = (e) => {
-        
+
         e.preventDefault();
 
         let errors = this.validateLoginForm();
 
         if(errors === true){
             alert("You are successfully signed in...");
-            window.location.reload()   
+            window.location.reload()
         } else {
             this.setState({
                 errors: errors,
@@ -83,15 +83,15 @@ class Login extends Component {
                         <FormGroup controlId="email" validationState={ formSubmitted ? (errors.email ? 'error' : 'success') : null }>
                             <ControlLabel>Email</ControlLabel>
                             <FormControl type="text" name="email" placeholder="Enter your email" onChange={this.handleInputChange} />
-                        { errors.email && 
-                            <HelpBlock>{errors.email}</HelpBlock> 
+                        { errors.email &&
+                            <HelpBlock>{errors.email}</HelpBlock>
                         }
-                        </FormGroup >
+                        </FormGroup>
                         <FormGroup controlId="password" validationState={ formSubmitted ? (errors.password ? 'error' : 'success') : null }>
                             <ControlLabel>Password</ControlLabel>
                             <FormControl type="password" name="password" placeholder="Enter your password" onChange={this.handleInputChange} />
-                        { errors.password && 
-                            <HelpBlock>{errors.password}</HelpBlock> 
+                        { errors.password &&
+                            <HelpBlock>{errors.password}</HelpBlock>
                         }
                         </FormGroup>
                         <Button type="submit" bsStyle="primary">Sign-In</Button>
